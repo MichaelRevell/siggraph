@@ -29,16 +29,9 @@ class BeliefsController < ApplicationController
   end
   
   def nodes
-    @beliefs = Belief.all
-    
-    @nodes = Array.new
-    @beliefs.each do |b|
-      @nodes << ["Id" => b.title, "Label" => b.title, "Believers" => 8, "Description" => "Description"]
-    end
-
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render :json => @nodes }
+      #format.html # index.html.erb
+      format.json { render :json => Belief.all }
     end
   end
   
