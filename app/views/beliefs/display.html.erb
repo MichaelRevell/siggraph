@@ -1,0 +1,117 @@
+<script type='text/javascript'>//<![CDATA[
+      $(function () {
+
+        var sigRoot = document.getElementById('sigmaroot');
+        var sigInst = sigma.init(sigRoot).drawingProperties({ defaultLabelColor: '#fff' });
+
+        var addEdges = function () {
+          $.getJSON("/beliefs/edges.json", function (edges) {
+            for (var i = 0; i < edges.length; i++) {
+              sigInst.addEdge(edges[i].Label, edges[i].Source, edges[i].Target, { 'weight': edges[i].Weight, 'size': edges[i].Weight });
+              $('#edges table tbody').append('<tr><td>' + edges[i].Label + '</td><td>' + edges[i].Weight + '</td></tr>');
+            }
+
+            sigInst.position(0, 0, 1).draw();
+
+          });
+        };
+
+        var addBeliefs = function () {
+          $.getJSON("/beliefs/nodes.json", function (beliefs) {
+            for (var i = 0; i < beliefs.length; i++) {
+              console.log(beliefs[i]);
+              sigInst.addNode(beliefs[i].Id, {
+                label: beliefs[i].Label,
+                color: 'rgb(' + Math.round(Math.random() * 256) + ',' +
+                    Math.round(Math.random() * 256) + ',' +
+                    Math.round(Math.random() * 256) + ')',
+                size: beliefs[i].Believers,
+                x: Math.random(),
+                y: Math.random()
+              });
+              $('#beliefs table tbody').append('<tr><td>' + beliefs[i].Label + '</td><td>' + beliefs[i].Believers + '</td></tr>');
+              console.log('adding node' + beliefs[i].Label);
+            }
+            addEdges();
+          });
+        };
+
+
+        var isRunning = false;
+        document.getElementById('stop-layout').addEventListener('click', function () {
+          if (isRunning) {
+            isRunning = false;
+            sigInst.stopForceAtlas2();
+            document.getElementById('stop-layout').childNodes[0].nodeValue = 'Start Layout';
+          } else {
+            isRunning = true;
+            sigInst.startForceAtlas2();
+            document.getElementById('stop-layout').childNodes[0].nodeValue = 'Stop Layout';
+          }
+        }, true);
+        document.getElementById('rescale-graph').addEventListener('click', function () {
+          console.log('rescale');
+          sigInst.position(0, 0, 1).draw();
+        }, true);
+
+        addBeliefs();
+      });
+
+
+//]]>
+
+</script>
+
+<div class='row'>
+  <div class="span12 buttons-container">
+    <button class="btn" id="stop-layout">Start Layout</button>
+    <button class="btn" id="rescale-graph">Rescale Graph</button>
+  </div>
+  <div class='row'>
+    <div id='sigmaroot'>
+    </div>
+  </div>
+</div>
+<div id='data'>
+  <div id='beliefs'>
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Belief</td>
+          <td>Believers</td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <div id='edges'>
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Connection</td>
+          <td>Weight</td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<style>
+    #beliefs, #edges
+    {
+      display: inline-block;
+      width: 40%;
+      margin: 10px;
+      vertical-align: top;
+    }
+
+      #beliefs div, #edges div
+      {
+        margin: 10px;
+        display: inline-block;
+      }
+  </style>

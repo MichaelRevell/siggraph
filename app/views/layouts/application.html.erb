@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sig</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Belief v0.1 - jsFiddle demo by danieleli</title>
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+  <script type='text/javascript' src="http://sigmajs.org/js/sigma.min.js"></script>
+  <%= javascript_include_tag "sigma.forceatlas2" %>
+  
+  
+  <style type='text/css'>
+    #sigmaroot
+    {
+      height: 500px;
+      background: #222;
+    }
+  </style>
+  
+  
+  </head>
+  <body class='container'>
+  
 <%= yield %>
-
 </body>
 </html>
