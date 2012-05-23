@@ -17,40 +17,43 @@ class BeliefsController < ApplicationController
   end
   
   def edges
-    # @beliefs = Belief.all
-    #     @edges = Array.new
-    #     x = 0
-    #     @beliefs.each do |b|
-    #       b.beliefs.each do |b2|
-    #         weight = 5
-    #         @edges << ["Id" => x, "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
-    #         x += 1
-    #       end
-    #     end
+    users = User.all
     @edges = Array.new
-    x = 0
-    # user = User.new
-    #    user.beliefs << Belief.first
-    #    user.beliefs << Belief.find(2)
-    #    User.all.each do |u|
-    #      beliefs = u.beliefs
-    #      for i in 0..beliefs.length
-    #        for j in (i+1)..beliefs.length
-    #          b = beliefs[i]
-    #          b2 = beliefs[j]
-    b = Belief.find(1)
-    b2 = Belief.find(2)
-          weight = 5
-          @edges << ["Id" => x, "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
-          x += 1
-     #    end
-     #   end
-     # end
-
+    
+    
+    for i in 0...users.size
+      @edges += extractEdgesFromBeliefArray(i, users[i].beliefs.sort_by{|b| b.title.downcase})
+    end
+    
+   
+    @weights = @edges.uniq.map {|e| [e, (@edges.select {|ee| ee["Label"] == e["Label"]}).size ]} 
+    @edges = @edges.uniq 
+    for i in 0...@weights.length
+      @edges[i]["Weight"] = @weights[i][1]
+    end
+    
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {render :html => @edges }# index.html.erb
       format.json { render :json => @edges }
     end
+  end
+  
+  def extractEdgesFromBeliefArray(id, beliefs)
+    edges = Array.new
+    for x in 0...beliefs.length
+      for y in x+1...beliefs.length
+        weight = 1
+        b = beliefs[x]
+        b2 = beliefs[y]
+        edges += ["Id" => "#{id}", "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
+        x += 1
+      end
+    end
+    return edges.uniq
+  end
+  
+  def find_unique_edge_count(edges)
+    
   end
   
   def nodes
@@ -58,7 +61,7 @@ class BeliefsController < ApplicationController
     
     @nodes = Array.new
     @beliefs.each do |b|
-      @nodes << ["Id" => b.title, "Label" => b.title, "Believers" => 8, "Description" => "Description"]
+      @nodes += ["Id" => b.title, "Label" => b.title, "Believers" => b.rels.size*2, "Description" => "Description"]
     end
 
     respond_to do |format|
