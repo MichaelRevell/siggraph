@@ -5,12 +5,14 @@ Sig::Application.routes.draw do
   get "log_in" => "sessions#new", :as => "log_in"
   get "sign_up" => "users#new", :as => "sign_up"
   get "add" => "beliefs#add", :as => "add"
+  post "users/update_connections" => "users#update_connections", :as => "update_connections"
   
   get "beliefs/nodes" => "beliefs#nodes", :as => "nodes"
   get "beliefs/edges" => "beliefs#edges", :as => "edges"
   get "beliefs/display" => "beliefs#display", :as => "display"
+   get "beliefs/mine" => "beliefs#mine", :as => "mine"
 
-  root :to => 'home#index'
+  root :to => 'beliefs#display'
 
   get "home/add_beliefs"
   get "home/sample"
@@ -20,8 +22,9 @@ Sig::Application.routes.draw do
   resources :home
 
   resources :users
+  
   resources :sessions
-
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

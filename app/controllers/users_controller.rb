@@ -68,6 +68,27 @@ class UsersController < ApplicationController
       end
     end
   end
+  
+  def update_connections
+    current_user.beliefs_rels.destroy_all
+    if params[:belief].nil? == false
+      params[:belief].each do |i|
+         current_user.beliefs << Belief.find_by_title(i[0])
+         current_user.save
+       end
+    end
+    
+
+    respond_to do |format|
+      if true
+        format.html { redirect_to mine_path, :notice => "User beliefs were successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render :action => "edit" }
+        format.json { render :json => current_user.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
 
   # DELETE /users/1
   # DELETE /users/1.json

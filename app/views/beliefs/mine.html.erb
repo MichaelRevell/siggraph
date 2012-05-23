@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>My beliefs</h1>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Agree</th>
+  </tr>
+<%= form_tag(:controller => "users", :action => "update_connections", :method => "post") %>
+<% @beliefs.each do |belief| %>
+  <tr>
+    <td><%= belief.title %></td>
+    <td><%= belief.description %></td>
+    <% if @mine.find(belief.id).nil? %>
+      <td><%= check_box_tag "belief[#{belief.title}]", belief.title, false %></td>
+    <% else %>
+      <td><%= check_box_tag "belief[#{belief.title}]", belief.title, true %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+ <%= submit_tag("Submit") %>
+ 
+<br />
+

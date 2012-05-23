@@ -40,14 +40,14 @@ class ConnectionsController < ApplicationController
   # POST /connections
   # POST /connections.json
   def create
-    @connection = Connection.new(params[:connection])
+    #@connection = Connection.new(params[:connection])
 
     respond_to do |format|
       if @connection.save
         format.html { redirect_to @connection, :notice => 'Connection was successfully created.' }
         format.json { render :json => @connection, :status => :created, :location => @connection }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => "new", , :notice => 'Connection was successfully created.' }
         format.json { render :json => @connection.errors, :status => :unprocessable_entity }
       end
     end

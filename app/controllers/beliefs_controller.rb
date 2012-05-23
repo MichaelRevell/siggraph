@@ -10,17 +10,42 @@ class BeliefsController < ApplicationController
     end
   end
   
-  def edges
+  def mine
     @beliefs = Belief.all
+    @mine = current_user.beliefs
+    @connection = Connection.new
+  end
+  
+  def edges
+    # @beliefs = Belief.all
+    #     @edges = Array.new
+    #     x = 0
+    #     @beliefs.each do |b|
+    #       b.beliefs.each do |b2|
+    #         weight = 5
+    #         @edges << ["Id" => x, "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
+    #         x += 1
+    #       end
+    #     end
     @edges = Array.new
     x = 0
-    @beliefs.each do |b|
-      b.beliefs.each do |b2|
-        weight = 5
-        @edges << ["Id" => x, "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
-        x += 1
-      end
-    end
+    # user = User.new
+    #    user.beliefs << Belief.first
+    #    user.beliefs << Belief.find(2)
+    #    User.all.each do |u|
+    #      beliefs = u.beliefs
+    #      for i in 0..beliefs.length
+    #        for j in (i+1)..beliefs.length
+    #          b = beliefs[i]
+    #          b2 = beliefs[j]
+    b = Belief.find(1)
+    b2 = Belief.find(2)
+          weight = 5
+          @edges << ["Id" => x, "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
+          x += 1
+     #    end
+     #   end
+     # end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -70,18 +95,18 @@ class BeliefsController < ApplicationController
   def edit
     @belief = Belief.find(params[:id])
   end
-
+  
   # POST /beliefs
   # POST /beliefs.json
   def create
-    if(current_user.id)
-      @belief = Belief.find_by_title(params[:title]) 
-      
-      if @belief == nil
+    # if(current_user.id)
+    #      @belief = Belief.find_by_title(params[:title]) 
+    #      
+    #      if @belief == nil
         @belief = Belief.new(params[:belief])
-        current_user.beliefs << @belief
-        @belief.users << current_user
-        current_user.update
+        # current_user.beliefs << @belief
+        #         @belief.users << current_user
+        #         current_user.update
       
         respond_to do |format|
           if @belief.save
@@ -92,17 +117,17 @@ class BeliefsController < ApplicationController
             format.json { render :json => @belief.errors, :status => :unprocessable_entity }
           end
         end
-      else
-        format.html { render :action => "new", :notice => 'Please Log in.' }
-      end
+      # else
+      #        format.html { render :action => "new", :notice => 'Please Log in.' }
+      #      end
       
-      else
-        #@belief.errors << "Please go to page to add existing belief"
-        respond_to do |format|
-          format.html { render :action => "new" }
-          format.json { render :json => @belief.errors, :status => :unprocessable_entity }
-        end
-      end
+      # else
+      #         #@belief.errors << "Please go to page to add existing belief"
+      #         respond_to do |format|
+      #           format.html { render :action => "new" }
+      #           format.json { render :json => @belief.errors, :status => :unprocessable_entity }
+      #         end
+      #       end
   end
 
   # PUT /beliefs/1

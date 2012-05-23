@@ -20,6 +20,17 @@
   
   </head>
   <body class='container'>
+    
+    <% if current_user %>
+    <%= current_user.name %> | <%= link_to "Log out", log_out_path %><br>
+    <%= link_to "All Beliefs", beliefs_path %> | <%= link_to "My Beliefs", mine_path %>
+    <% else %>
+    
+    <%= link_to "Log in", log_in_path %> |
+    <%= link_to "Create User", sign_up_path %>
+    <% end%> 
+    
+    <hr>
   
 <%= yield %>
 </body>

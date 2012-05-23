@@ -7,8 +7,8 @@
         var addEdges = function () {
           $.getJSON("/beliefs/edges.json", function (edges) {
             for (var i = 0; i < edges.length; i++) {
-              sigInst.addEdge(edges[i].Label, edges[i].Source, edges[i].Target, { 'weight': edges[i].Weight, 'size': edges[i].Weight });
-              $('#edges table tbody').append('<tr><td>' + edges[i].Label + '</td><td>' + edges[i].Weight + '</td></tr>');
+              sigInst.addEdge(edges[i][0].Label, edges[i][0].Source, edges[i][0].Target, { 'weight': edges[i][0].Weight, 'size': edges[i][0].Weight });
+              $('#edges table tbody').append('<tr><td>' + edges[i][0].Label + '</td><td>' + edges[i][0].Weight + '</td></tr>');
             }
 
             sigInst.position(0, 0, 1).draw();
@@ -19,18 +19,18 @@
         var addBeliefs = function () {
           $.getJSON("/beliefs/nodes.json", function (beliefs) {
             for (var i = 0; i < beliefs.length; i++) {
-              console.log(beliefs[i]);
-              sigInst.addNode(beliefs[i].Id, {
-                label: beliefs[i].Label,
+              console.log(beliefs[i][0]);
+              sigInst.addNode(beliefs[i][0].Id, {
+                label: beliefs[i][0].Label,
                 color: 'rgb(' + Math.round(Math.random() * 256) + ',' +
                     Math.round(Math.random() * 256) + ',' +
                     Math.round(Math.random() * 256) + ')',
-                size: beliefs[i].Believers,
+                size: beliefs[i][0].Believers,
                 x: Math.random(),
                 y: Math.random()
               });
-              $('#beliefs table tbody').append('<tr><td>' + beliefs[i].Label + '</td><td>' + beliefs[i].Believers + '</td></tr>');
-              console.log('adding node' + beliefs[i].Label);
+              $('#beliefs table tbody').append('<tr><td>' + beliefs[i][0].Label + '</td><td>' + beliefs[i][0].Believers + '</td></tr>');
+              console.log('adding node' + beliefs[i][0].Label);
             }
             addEdges();
           });

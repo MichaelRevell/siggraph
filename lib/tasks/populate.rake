@@ -84,4 +84,40 @@ namespace :neo4j do
     User.destroy_all
     puts "Destroyed all Users."
   end
+  
+    task :danedges => :environment do
+    b1 = Belief.new
+    b1.title = "cat"
+    b2 = Belief.new (:title=>"dog")
+    puts create_edge(b1, b2)
+      
+    end
+    
+    def create_edge (belief1, belief2)
+      return "cat"#["Id" => 1, "Label" => "#{belief1.title}_#{belief2.title}", "Source" => belief1.title, "Target" => belief2.title, "Weight" => 1, "Type" => "undirected"] 
+    end
+  
+  task :edges => :environment do
+    @edges = Array.new
+    x = 0d
+    User.all.each do |u|
+      beliefs = u.beliefs
+      for i in 0..beliefs.length
+        for j in (i+1)..beliefs.length
+          b = beliefs[i]
+          b2 = beliefs[j]
+          weight = 5
+          @edges << ["Id" => x, 
+            "Label" => "#{b.title}_#{b2.title}", 
+            "Source" => b.title, 
+            "Target" => b2.title, 
+            "Weight" => weight, 
+            "Type" => "undirected"]
+          x += 1
+        end
+      end
+    end
+    
+    puts @edges
+  end
 end
