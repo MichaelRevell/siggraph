@@ -38,6 +38,15 @@ GEM
     arel (3.0.2)
     bouncy-castle-java (1.5.0146.1)
     builder (3.0.0)
+    capybara (1.1.2)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      selenium-webdriver (~> 2.0)
+      xpath (~> 0.1.4)
+    childprocess (0.3.2)
+      ffi (~> 1.0.6)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -49,7 +58,13 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    ffi (1.0.11)
     ffi (1.0.11-java)
+    guard (1.0.3)
+      ffi (>= 0.5.0)
+      thor (>= 0.14.6)
+    guard-rspec (0.7.3)
+      guard (>= 0.10.0)
     heroku (2.25.0)
       launchy (>= 0.3.2)
       netrc (~> 0.7.1)
@@ -65,10 +80,14 @@ GEM
       bouncy-castle-java (>= 1.5.0146.1)
     json (1.7.3)
     json (1.7.3-java)
+    launchy (2.1.0)
+      addressable (~> 2.2.6)
     launchy (2.1.0-java)
       addressable (~> 2.2.6)
       ffi (~> 1.0.9)
       spoon (~> 0.0.1)
+    libwebsocket (0.1.3)
+      addressable
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -86,6 +105,7 @@ GEM
     neo4j-wrapper (2.0.0-java)
       neo4j-core (= 2.0.0)
     netrc (0.7.1)
+    nokogiri (1.5.2-java)
     orm_adapter (0.0.7)
     polyglot (0.3.3)
     rack (1.4.1)
@@ -134,6 +154,12 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+    selenium-webdriver (2.21.2)
+      childprocess (>= 0.2.5)
+      ffi (~> 1.0)
+      libwebsocket (~> 0.1.3)
+      multi_json (~> 1.0)
+      rubyzip
     spoon (0.0.1)
     sprockets (2.1.3)
       hike (~> 1.2)
@@ -149,12 +175,16 @@ GEM
     uglifier (1.2.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
+    xpath (0.1.4)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   java
 
 DEPENDENCIES
+  capybara
   coffee-rails (~> 3.2.1)
+  guard-rspec
   heroku
   jquery-rails
   jruby-openssl

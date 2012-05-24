@@ -14,6 +14,7 @@ class BeliefsController < ApplicationController
     @beliefs = Belief.all
     @mine = current_user.beliefs
     @connection = Connection.new
+    @users = User.all
   end
   
   def edges
@@ -32,6 +33,7 @@ class BeliefsController < ApplicationController
       @edges[i]["Weight"] = @weights[i][1]
     end
     
+    @edges = @edges.uniq
     respond_to do |format|
       format.html {render :html => @edges }# index.html.erb
       format.json { render :json => @edges }
@@ -45,7 +47,7 @@ class BeliefsController < ApplicationController
         weight = 1
         b = beliefs[x]
         b2 = beliefs[y]
-        edges += ["Id" => "#{id}", "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
+        edges += ["Id" => "#{b.title}_#{b2.title}", "Label" => "#{b.title}_#{b2.title}", "Source" => b.title, "Target" => b2.title, "Weight" => weight, "Type" => "undirected"]
         x += 1
       end
     end
@@ -61,7 +63,7 @@ class BeliefsController < ApplicationController
     
     @nodes = Array.new
     @beliefs.each do |b|
-      @nodes += ["Id" => b.title, "Label" => b.title, "Believers" => b.rels.size*2, "Description" => "Description"]
+      @nodes += ["Id" => b.title, "Label" => b.title, "Believers" => b.rels.size/2, "Description" => "Description"]
     end
 
     respond_to do |format|

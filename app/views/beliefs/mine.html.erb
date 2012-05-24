@@ -1,5 +1,17 @@
 <p id="notice"><%= notice %></p>
 
+<%= form_tag sessions_path do %>
+<select name="name" id="user" onchange="submit();" size="1">
+<% @users.each do |user| %>
+    <option 
+    <% if current_user.name == user.name %> 
+    SELECTED
+    <% end %>
+      value="<%= user.name %>"><%= user.name %></option>
+<% end %>
+</select>
+
+<% end %>
 <h1>My beliefs</h1>
 <table>
   <tr>
